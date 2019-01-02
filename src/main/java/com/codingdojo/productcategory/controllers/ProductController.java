@@ -107,7 +107,7 @@ public class ProductController {
 
 			session.setAttribute("cart", cart);
 			session.setAttribute("count", 1);
-			
+
 		}
 
 		System.out.println("END OF CART LOGIC");
@@ -120,7 +120,6 @@ public class ProductController {
 	}
 	// Taking to the check out page
 
-	
 	@GetMapping("/cart/products")
 	public String cart(Model model) {
 		HashMap<Long, Product> allitems = new HashMap<>();
@@ -130,10 +129,12 @@ public class ProductController {
 		model.addAttribute("allitems", allitems);
 		return "cart/chekout.jsp";
 	}
+
 	@GetMapping("/payment")
 	public String payment(Model model) {
 		return "cart/payment.jsp";
 	}
+
 	@PostMapping("/charge")
 	public String charge(@Valid @ModelAttribute("product") Product product, BindingResult result, HttpSession session,
 			@RequestParam("stripeToken") String token
@@ -152,16 +153,13 @@ public class ProductController {
 		// Token is created using Checkout or Elements!
 		// Get the payment token ID submitted by the form:
 		// String token = request.getParameter("stripeToken");
-		//HashMap<Long, Integer> cart = new HashMap<Long, Integer>();
-	
-		
+		// HashMap<Long, Integer> cart = new HashMap<Long, Integer>();
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("amount", 599);
 		params.put("currency", "usd");
 		params.put("description", "Example charge");
 		params.put("source", token);
-		
 
 		try {
 			System.out.println("About to charge...");
@@ -169,7 +167,7 @@ public class ProductController {
 
 			System.out.println(" - Done charging...");
 			session.removeAttribute("cart");
-			
+
 			session.removeAttribute("count");
 //			if (session.getAttribute("cart") != null) {
 //		
@@ -185,4 +183,30 @@ public class ProductController {
 		return "redirect:/";
 	}
 
+	@GetMapping("/about")
+	public String about() {
+
+		return "about.jsp";
+	}
+
+	@GetMapping("/getintouch")
+	public String getInTouch() {
+
+		return "getInTouch.jsp";
+	}
+
+	@PostMapping("/products/search")
+	public String searchBy(@RequestParam("name") String name) {
+		return "redirect:/search/"+name;
+	}
+	
+	@GetMapping("/search/{product}")
+	public String getAtrist(@PathVariable("product") String productName, Model model) {
+		System.out.println("productName: " + productName);
+		List<Product> products = this.ps.getProductsByName(productName);
+		model.addAttribute("products", products);
+		return "search.jsp";
+	}
+
+	
 }

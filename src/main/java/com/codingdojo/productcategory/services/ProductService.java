@@ -7,7 +7,6 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-
 import com.codingdojo.productcategory.models.Category;
 import com.codingdojo.productcategory.models.Product;
 import com.codingdojo.productcategory.repositories.CategoryRepo;
@@ -52,13 +51,23 @@ public class ProductService {
 		}
 	}
 
+	// Find the Product by iD
 	public Product productById(Long id) {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
-	
+
 	// find all the product for home page
 	public List<Product> allProduct() {
 		return (List<Product>) pr.findAll();
 	}
+	
+	public List<Product> getProductsByName(String productName) {
+		List<Product> products = this.pr.findByNameContaining(productName);
+		System.out.println("Products (inService: " + products);
+		return products;
+	}
+
+
+
 }

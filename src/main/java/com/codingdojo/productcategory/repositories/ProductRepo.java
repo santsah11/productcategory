@@ -11,6 +11,6 @@ import com.codingdojo.productcategory.models.Product;
 public interface ProductRepo extends CrudRepository<Product ,Long> {
 
 	List<Product> findByIdNotIn(ArrayList<Long> prosId);
+	public List<Product> findByNameContaining(String productName);
 	
-
 }
